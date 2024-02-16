@@ -23,5 +23,10 @@ bst.buildTree(array2);
 // bst.remove(20)
 bst.prettyPrint();
 console.log(bst.find(200));
+//console.log(bst.levelOrder());
+
+// console.log(bst.inOrder());
+// console.log(bst.preOrder());
+console.log(bst.postOrder());
 
 //console.log(bst.getSortedArray())

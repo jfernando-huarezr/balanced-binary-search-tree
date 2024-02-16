@@ -12,6 +12,8 @@ export default class BinarySearchTree {
   constructor() {
     this.root = null;
     this.sortedArray = [];
+    this.bfsArray = [];
+    this.dfsArray = [];
   }
 
   //build a balanced search tree from an array input (only numbers)
@@ -142,7 +144,7 @@ export default class BinarySearchTree {
     if (!this.root) return null;
 
     let queue = [];
-    let bfsArray = [];
+    this.bfsArray = [];
 
     let current = null;
     queue.unshift(this.root);
@@ -151,12 +153,69 @@ export default class BinarySearchTree {
       current = queue.pop();
       typeof callback === "function"
         ? callback(current)
-        : bfsArray.push(current.value);
+        : this.bfsArray.push(current.value);
       if (current.left) queue.unshift(current.left);
       if (current.right) queue.unshift(current.right);
     }
 
-    if (bfsArray.length !== 0) return bfsArray;
+    if (this.bfsArray.length !== 0) return this.bfsArray;
+  }
+
+  inOrder(callback) {
+    if (!this.root) return null;
+
+    this.dfsArray = [];
+
+    this.inOrderRecursive(this.root, callback);
+
+    if (this.dfsArray.length !== 0) return this.dfsArray;
+  }
+
+  inOrderRecursive(node, callback) {
+    // inorder
+    if (node.left) this.inOrderRecursive(node.left, callback);
+    typeof callback === "function"
+      ? callback(node)
+      : this.dfsArray.push(node.value);
+    if (node.right) this.inOrderRecursive(node.right, callback);
+  }
+
+  preOrder(callback) {
+    if (!this.root) return null;
+
+    this.dfsArray = [];
+
+    this.preOrderRecursive(this.root, callback);
+
+    if (this.dfsArray.length !== 0) return this.dfsArray;
+  }
+
+  preOrderRecursive(node, callback) {
+    // preorder
+    typeof callback === "function"
+      ? callback(node)
+      : this.dfsArray.push(node.value);
+    if (node.left) this.preOrderRecursive(node.left, callback);
+    if (node.right) this.preOrderRecursive(node.right, callback);
+  }
+
+  postOrder(callback) {
+    if (!this.root) return null;
+
+    this.dfsArray = [];
+
+    this.postOrderRecursive(this.root, callback);
+
+    if (this.dfsArray.length !== 0) return this.dfsArray;
+  }
+
+  postOrderRecursive(node, callback) {
+    // postorder
+    if (node.left) this.postOrderRecursive(node.left, callback);
+    if (node.right) this.postOrderRecursive(node.right, callback);
+    typeof callback === "function"
+      ? callback(node)
+      : this.dfsArray.push(node.value);
   }
 
   findMin(node) {
