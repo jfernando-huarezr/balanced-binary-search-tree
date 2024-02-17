@@ -14,6 +14,7 @@ export default class BinarySearchTree {
     this.sortedArray = [];
     this.bfsArray = [];
     this.dfsArray = [];
+    this.balanced = false;
   }
 
   //build a balanced search tree from an array input (only numbers)
@@ -253,6 +254,74 @@ export default class BinarySearchTree {
     if (node.left) this.getSortedArrayRecursive(node.left);
     this.sortedArray.push(node.value);
     if (node.right) this.getSortedArrayRecursive(node.right);
+  }
+
+  height(node) {
+    if (!node) node = this.root;
+    return this.heightRecursive(node);
+  }
+
+  heightRecursive(node) {
+    if (node == null) {
+      // The height of an empty tree is -1
+      return -1;
+    } else {
+      // Compute the height of each subtree
+      let leftHeight = this.heightRecursive(node.left);
+      let rightHeight = this.heightRecursive(node.right);
+
+      // The height of the node is the maximum height of its two subtrees, plus 1
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
+  }
+
+  depth(node) {
+    if (!node) return 0;
+
+    let current = this.root;
+    let depth = 0;
+
+    while (current) {
+      if (current === node) return depth;
+
+      node.value < current.value
+        ? (current = current.left)
+        : (current = current.right);
+
+      depth++;
+    }
+
+    return 0;
+  }
+
+  isBalanced() {
+    return this.checkBalance(this.root) !== -1;
+  }
+
+  checkBalance(node) {
+    if (node == null) {
+      return 0;
+    }
+
+    let leftHeight = this.checkBalance(node.left);
+    let rightHeight = this.checkBalance(node.right);
+
+    if (
+      leftHeight === -1 ||
+      rightHeight === -1 ||
+      Math.abs(leftHeight - rightHeight) > 1
+    ) {
+      return -1;
+    }
+
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  rebalance() {
+    if (this.isBalanced()) return;
+
+    this.getSortedArray();
+    this.buildTree(this.sortedArray);
   }
 
   print() {
