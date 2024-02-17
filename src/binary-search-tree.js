@@ -39,40 +39,40 @@ export default class BinarySearchTree {
   }
 
   insert(value) {
-    // se crea un nuevo nodo
+    // create new node
     const newNode = new Node(value);
 
-    // si el árbol está vacío
+    // if tree empty
     if (!this.root) {
       this.root = newNode;
       return;
     }
 
-    // de lo contrario, se inserta recursivamente en root
+    // else, use recursion
     this.insertRecursive(newNode, this.root);
   }
 
   insertRecursive(newNode, node) {
-    // si va para la izquierda
+    // if left
     if (newNode.value < node.value) {
-      // si hay espacio, se inserta
+      // if empty space, insert
       if (!node.left) node.left = newNode;
-      // de lo contrario se inserta en node.left recursivamente
+      // else use recursion again
       else this.insertRecursive(newNode, node.left);
     }
 
-    // si va para la derecha
+    // if right
     if (newNode.value > node.value) {
-      // si hay espacio, se inserta
+      // if empty insert
       if (!node.right) node.right = newNode;
-      // de lo contrario se inserta en node.right recursivamente
+      // else use recursion
       else this.insertRecursive(newNode, node.right);
     }
   }
 
   remove(value) {
     if (!this.root) return null;
-    // de lo contrario, se remueve recursivamente
+    // use remove recursion
     this.root = this.removeRecursive(value, this.root);
   }
 
@@ -80,14 +80,14 @@ export default class BinarySearchTree {
     // if node doesnt exist/is empty
     if (!node) return null;
 
-    // si el nodo es el que se está buscando
+    // if node found
     if (value === node.value) {
-      // caso 1: si el nodo no tiene hijos, se nulea el nodo
+      // case 1: node without children, it goes null
       if (!node.left && !node.right) {
         node = null;
         return node;
       }
-      // caso 2: si el nodo tiene solo un hijo, se reemplaza por su hijo
+      // caso 2: node with single child, replace the node with the child
       if (node.left && !node.right) {
         node = node.left;
         return node;
@@ -98,27 +98,27 @@ export default class BinarySearchTree {
         return node;
       }
 
-      // caso 3: si el nodo tiene dos hijos
+      // case 3: node with two children
       if (node.left && node.right) {
-        // (validación redundante pero didáctica)
-        // buscar el mínimo por la derecha
+        // (redundant validation but i like it)
+        // search minimum in the right branch
         let minNode = this.findMin(node.right);
-        // se reemplaza el valor de node por el de minNode
+        // replace node with minNode
         node.value = minNode.value;
-        // eliminar minNode
+        // delete minNode
         this.right = this.removeRecursive(minNode.value, node.right);
 
         return node;
       }
     }
 
-    // si el nodo a eliminar está a la izquierda
+    // if node we want to delete is on the left
     if (value < node.value) {
       node.left = this.removeRecursive(value, node.left);
       return node;
     }
 
-    // si el nodo a eliminar está a la derecha
+    // if node we want to delete is on the right
     if (value > node.value) {
       node.right = this.removeRecursive(value, node.right);
       return node;
@@ -220,10 +220,9 @@ export default class BinarySearchTree {
   }
 
   findMin(node) {
-    // si no hay node, se asume que es root
     if (!node) node = this.root;
 
-    // ir hacia lo más izquierda que se pueda
+    // go all the way to the left
     let current = node;
     while (current.left) {
       current = current.left;
@@ -232,10 +231,10 @@ export default class BinarySearchTree {
   }
 
   findMax(node) {
-    // si no hay node, se asume que es root
+    // if node is empty, guess it's root
     if (!node) node = this.root;
 
-    // ir hacia lo más derecha que se pueda
+    // go all the way to the right
     let current = node;
     while (current.right) {
       current = current.right;
@@ -250,7 +249,7 @@ export default class BinarySearchTree {
   }
 
   getSortedArrayRecursive(node) {
-    // inorder: ordenado
+    // inorder
     if (node.left) this.getSortedArrayRecursive(node.left);
     this.sortedArray.push(node.value);
     if (node.right) this.getSortedArrayRecursive(node.right);
@@ -358,36 +357,36 @@ export default class BinarySearchTree {
   }
 
   printVisual() {
-    // si árbol está vacío
+    // if empty tree
     if (!this.root) {
       console.log("El árbol está vacío.");
       return;
     }
 
-    // de lo contrario
+    // else
     this.printVisualRecursive(this.root, 0);
   }
 
   printVisualRecursive(node, level) {
-    // se genera la tabulación
+    // generate tabulation
     let tabulation = "├" + "──".repeat(level);
 
-    // se imprime el nodo
+    // print node
     console.log(tabulation + node.value);
 
-    // y se deriva la impresión a los hijos
+    // print children
     if (node.left) this.printVisualRecursive(node.left, level + 1);
     if (node.right) this.printVisualRecursive(node.right, level + 1);
   }
 
   prettyPrint() {
-    // si árbol está vacío
+    // empty tree
     if (!this.root) {
       console.log("El árbol está vacío.");
       return;
     }
 
-    // de lo contrario
+    // else
     this.prettyPrintRecursive(this.root);
   }
 
